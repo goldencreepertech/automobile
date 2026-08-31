@@ -70,7 +70,7 @@ php artisan automobile:seed
 | Migrations | Auto-loaded from the package via `loadMigrationsFrom()` — no publish step needed |
 | Seeder | `Automobile\Database\Seeders\AutomobileSeeder` — real catalog for vehicles sold in India (≈2026), plus a spare-parts catalog |
 | REST API | `apiResource` routes for all five models, behind a config flag |
-| Auth | `auth.static` middleware — bearer token compared against `STATIC_TOKEN`, falling back to Sanctum |
+| Auth | `auth.static` middleware — bearer token compared against `STATIC_TOKEN`, falling back to the configured guard (`automobile.auth.guard`, default `sanctum`) |
 | Docs | OpenAPI annotations on the controllers + `Automobile\Swagger\SwaggerDefinitions` — rendered by `darkaonline/l5-swagger` when the consuming app adds it (dev) |
 
 ### Data model
@@ -163,6 +163,10 @@ curl -H "Authorization: Bearer $STATIC_TOKEN" \
     'prefix'     => env('AUTOMOBILE_ROUTES_PREFIX', 'api/v1'),
     'middleware' => ['api', 'auth.static'],
 ],
+
+'auth' => [
+    'guard' => env('AUTOMOBILE_AUTH_GUARD', 'sanctum'),
+],
 ```
 
 Set `AUTOMOBILE_ROUTES_ENABLED=false` to keep only the models / migrations / seeder and
@@ -175,8 +179,10 @@ IS_STATIC_TOKEN=true
 STATIC_TOKEN=your-secret-token
 ```
 
-When `IS_STATIC_TOKEN=false` the `auth.static` middleware falls straight through to Sanctum,
-so you can bring your own auth by leaving it off and swapping the middleware entry.
+The `auth.static` middleware compares the bearer token against `STATIC_TOKEN`; any other
+request falls through to `config('automobile.auth.guard')` (Sanctum by default). Point
+`AUTOMOBILE_AUTH_GUARD` at your own guard — or drop `auth.static` from the middleware stack
+entirely — to bring your own auth.
 
 ### Publishable tags
 

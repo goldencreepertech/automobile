@@ -2,7 +2,6 @@
 
 namespace Automobile\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -15,6 +14,7 @@ class AuthenticateWithStaticToken
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
+        $guard = config('automobile.auth.guard', 'sanctum');
 
         if (
             config('static_token.enabled')
@@ -25,13 +25,13 @@ class AuthenticateWithStaticToken
             $user = $this->resolveUserModel()::first();
 
             if ($user) {
-                Auth::guard('sanctum')->setUser($user);
+                Auth::guard($guard)->setUser($user);
             }
 
             return $next($request);
         }
 
-        return app(Authenticate::class)->handle($request, $next, 'sanctum');
+        return app(Authenticate::class)->handle($request, $next, $guard);
     }
 
     /**
@@ -42,6 +42,6 @@ class AuthenticateWithStaticToken
      */
     private function resolveUserModel(): string
     {
-        return config('auth.providers.users.model', User::class);
+        return config('auth.providers.users.model') ?? 'App\\Models\\User';
     }
 }

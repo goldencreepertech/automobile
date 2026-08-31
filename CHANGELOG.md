@@ -11,7 +11,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   (guarded by `config('automobile.routes.enabled')`), merges + publishes config.
 - `automobile:install` — publishes config, runs migrations, seeds the vehicle catalog.
 - `automobile:seed` — re-seeds the catalog without migrating.
-- `config/automobile.php` — route enable / prefix / middleware.
+- `config/automobile.php` — route enable / prefix / middleware, plus
+  `auth.guard` (`AUTOMOBILE_AUTH_GUARD`, default `sanctum`) for the `auth.static` fallback.
 - `routes/automobile.php` — the five `apiResource` routes.
 
 ### Changed
