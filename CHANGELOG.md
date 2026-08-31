@@ -25,12 +25,13 @@ First release.
 - Runtime dependencies trimmed to `laravel/framework` + `laravel/sanctum`.
   `darkaonline/l5-swagger`, `doctrine/annotations` and `laravel/tinker` moved to
   `require-dev`; `laravel/sail` dropped.
-- Support Laravel 11 **and** 12 (`^11.0 || ^12.0`).
+- Target Laravel 12 (`^12.0`). Laravel 11 is EOL and every 11.x release now carries
+  unpatched security advisories, so Composer will not install it.
 - Composer dist pruned to the package via `.gitattributes` `export-ignore`.
 
 ### Testing
-- Isolated test suite with `orchestra/testbench` (Laravel 11 + 12).
-- GitHub Actions CI: PHPUnit matrix (PHP 8.2/8.3 × Laravel 11/12) + Pint.
+- Isolated test suite with `orchestra/testbench` 10.
+- GitHub Actions CI: PHPUnit on PHP 8.2 / 8.3 / 8.4 + Pint.
 
 [Unreleased]: https://github.com/goldencreepertech/automobile/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/goldencreepertech/automobile/releases/tag/v0.1.0

@@ -6,7 +6,7 @@ models, variants, vehicles, and parts — with real seed data and an optional RE
 
 - **Composer name:** `goldencreepertech/automobile`
 - **PHP namespace:** `Automobile\`
-- **Requires:** PHP `^8.2`, `laravel/framework` `^11.0 || ^12.0`, `laravel/sanctum` `^4.0` — nothing else
+- **Requires:** PHP `^8.2`, `laravel/framework` `^12.0`, `laravel/sanctum` `^4.0` — nothing else
 - **License:** MIT
 
 > Swagger doc generation is optional: `composer require --dev darkaonline/l5-swagger` in the
@@ -218,7 +218,7 @@ demo's `AppServiceProvider`, never by the package.
 ## Testing
 
 The package is tested in isolation with [Testbench](https://github.com/orchestral/testbench)
-(no host app needed) against Laravel 11 and 12:
+(no host app needed):
 
 ```bash
 composer install
@@ -226,7 +226,7 @@ vendor/bin/phpunit
 vendor/bin/pint --test   # code style
 ```
 
-CI (`.github/workflows/ci.yml`) runs the suite on PHP 8.2 / 8.3 × Laravel 11 / 12.
+CI (`.github/workflows/ci.yml`) runs the suite on PHP 8.2 / 8.3 / 8.4.
 
 ---
 
@@ -257,7 +257,7 @@ database/migrations/host/  Laravel/Sanctum core tables (demo app only)
 - [x] Auto-discovery via `composer.json` `extra.laravel.providers`
 - [x] One-command install — `automobile:install` (+ `automobile:seed`)
 - [x] Trim runtime deps to `laravel/framework` + `laravel/sanctum` (l5-swagger, tinker → dev; sail dropped)
-- [x] Support Laravel 11 **and** 12
+- [x] Target Laravel 12 (Laravel 11 is EOL and carries unpatched advisories)
 - [x] Isolated package tests with `orchestra/testbench` + GitHub Actions CI
 - [ ] Verify `composer require` + `automobile:install` end-to-end in a clean host app
 - [ ] Tag `v0.1.0` and submit to [Packagist](https://packagist.org/) as `goldencreepertech/automobile`

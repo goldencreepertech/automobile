@@ -39,6 +39,9 @@ abstract class TestCase extends Orchestra
             'provider' => 'users',
         ]);
 
+        // Exercise the bundled API regardless of any AUTOMOBILE_ROUTES_ENABLED in the env.
+        $app['config']->set('automobile.routes.enabled', true);
+
         $app['config']->set('static_token.enabled', true);
         $app['config']->set('static_token.token', 'test-token');
     }
