@@ -16,15 +16,16 @@
 /.gitattributes     export-ignore
 /.gitignore         export-ignore
 /.styleci.yml       export-ignore
-CHANGELOG.md        export-ignore
 
 /app                export-ignore
 /bootstrap          export-ignore
 /public             export-ignore
 /resources          export-ignore
+/storage            export-ignore
 /tests              export-ignore
 /artisan            export-ignore
 /phpunit.xml        export-ignore
+/pint.json          export-ignore
 /package.json       export-ignore
 /vite.config.js     export-ignore
 
