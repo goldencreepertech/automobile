@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-31
+
+First release.
+
 ### Added
 - `AutomobileServiceProvider` — auto-discovered; loads the package migrations,
   registers the `auth.static` middleware alias, mounts the bundled REST API
@@ -27,3 +31,6 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 ### Testing
 - Isolated test suite with `orchestra/testbench` (Laravel 11 + 12).
 - GitHub Actions CI: PHPUnit matrix (PHP 8.2/8.3 × Laravel 11/12) + Pint.
+
+[Unreleased]: https://github.com/goldencreepertech/automobile/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/goldencreepertech/automobile/releases/tag/v0.1.0
