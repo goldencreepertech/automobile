@@ -21,7 +21,7 @@ class InstallCommand extends Command
             '--tag' => 'automobile-config',
             '--force' => (bool) $this->option('force'),
         ]);
-        $this->components->task('Publish config (config/automobile.php, config/static_token.php)');
+        $this->components->task('Publish config (config/automobile.php)');
 
         $this->call('migrate', ['--force' => true]);
 
@@ -42,7 +42,7 @@ class InstallCommand extends Command
             $this->components->bulletList([
                 'REST API mounted at "'.config('automobile.routes.prefix', 'api/v1').'/{manufacturers,models,variants,vehicles,parts}"',
                 'Set AUTOMOBILE_ROUTES_ENABLED=false to disable the bundled routes.',
-                'Static-token auth: set IS_STATIC_TOKEN=true and STATIC_TOKEN=... in your .env, or swap the "auth.static" middleware in config/automobile.php.',
+                'The routes ship with no auth - add your guard to config("automobile.routes.middleware"), e.g. ["api", "auth:sanctum"].',
             ]);
         }
 

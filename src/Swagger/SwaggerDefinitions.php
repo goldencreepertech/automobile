@@ -17,11 +17,11 @@ use OpenApi\Annotations as OA;
  * )
  *
  * @OA\SecurityScheme(
- *     securityScheme="sanctum",
+ *     securityScheme="bearerAuth",
  *     type="http",
  *     scheme="bearer",
  *     bearerFormat="token",
- *     description="Enter just the token value - Swagger will prepend 'Bearer ' automatically"
+ *     description="Bearer token issued by the host application's auth. Enter just the token value."
  * )
  */
 class SwaggerDefinitions {}

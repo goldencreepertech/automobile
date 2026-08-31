@@ -5,6 +5,18 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Removed
+- **Static-token authentication.** The `auth.static` middleware,
+  `config/static_token.php`, `AuthenticateWithStaticToken`, and the
+  `automobile.auth.guard` option are gone. The bundled routes now run through
+  `automobile.routes.middleware` (default `['api']`); the host application adds
+  its own auth (`['api', 'auth:sanctum']`, a custom middleware, …).
+- `laravel/sanctum` is no longer a runtime dependency (moved to `require-dev`
+  for the demo app). Runtime require is just `laravel/framework` `^12.0`.
+
+### Changed
+- OpenAPI security scheme renamed `sanctum` → `bearerAuth` (generic HTTP bearer).
+
 ## [0.1.1] - 2026-08-31
 
 First usable release. (`v0.1.0` was tagged with a `^11.0 || ^12.0` constraint that

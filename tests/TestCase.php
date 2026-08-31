@@ -3,7 +3,8 @@
 namespace Tests;
 
 use Automobile\AutomobileServiceProvider;
-use Laravel\Sanctum\SanctumServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -14,13 +15,12 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            SanctumServiceProvider::class,
             AutomobileServiceProvider::class,
         ];
     }
 
     /**
-     * Configure the throwaway environment: in-memory SQLite + a known static token.
+     * Configure the throwaway environment: in-memory SQLite, bundled routes on.
      */
     protected function defineEnvironment($app): void
     {
@@ -32,17 +32,11 @@ abstract class TestCase extends Orchestra
             'foreign_key_constraints' => true,
         ]);
 
-        // A consuming app that enables the bundled API has Sanctum's guard configured
-        // (it ships in the Laravel skeleton); Testbench's minimal skeleton does not.
-        $app['config']->set('auth.guards.sanctum', [
-            'driver' => 'sanctum',
-            'provider' => 'users',
-        ]);
-
-        // Exercise the bundled API regardless of any AUTOMOBILE_ROUTES_ENABLED in the env.
         $app['config']->set('automobile.routes.enabled', true);
+        $app['config']->set('automobile.routes.prefix', 'api/v1');
+        $app['config']->set('automobile.routes.middleware', ['api']);
 
-        $app['config']->set('static_token.enabled', true);
-        $app['config']->set('static_token.token', 'test-token');
+        // Testbench's minimal skeleton has no "api" rate limiter.
+        RateLimiter::for('api', fn () => Limit::perMinute(60));
     }
 }

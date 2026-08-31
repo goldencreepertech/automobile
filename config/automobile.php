@@ -11,6 +11,9 @@ return [
     | vehicles, parts). Set "enabled" to false if the consuming application
     | prefers to expose the models through its own controllers/routes.
     |
+    | The package ships no authentication of its own - add whatever the host
+    | application uses to the "middleware" stack, e.g. ['api', 'auth:sanctum'].
+    |
     */
 
     'routes' => [
@@ -20,22 +23,7 @@ return [
         'prefix' => env('AUTOMOBILE_ROUTES_PREFIX', 'api/v1'),
 
         // Middleware stack applied to the bundled route group.
-        'middleware' => ['api', 'auth.static'],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication
-    |--------------------------------------------------------------------------
-    |
-    | The "auth.static" middleware compares the request's bearer token against
-    | STATIC_TOKEN and otherwise defers to this guard. Defaults to Sanctum
-    | (a package dependency); point it at your own guard to bring your own auth.
-    |
-    */
-
-    'auth' => [
-        'guard' => env('AUTOMOBILE_AUTH_GUARD', 'sanctum'),
+        'middleware' => ['api'],
     ],
 
 ];

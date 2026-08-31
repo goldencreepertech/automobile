@@ -21,7 +21,7 @@ class VariantController extends Controller
      *     path="/api/v1/variants",
      *     tags={"Variants"},
      *     summary="List variants",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="model_id",
      *         in="query",
@@ -52,7 +52,7 @@ class VariantController extends Controller
      *     path="/api/v1/variants",
      *     tags={"Variants"},
      *     summary="Create a variant",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -85,7 +85,7 @@ class VariantController extends Controller
      *     path="/api/v1/variants/{variant}",
      *     tags={"Variants"},
      *     summary="Get a single variant",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="variant",
      *         in="path",
@@ -106,7 +106,7 @@ class VariantController extends Controller
      *     path="/api/v1/variants/{variant}",
      *     tags={"Variants"},
      *     summary="Update a variant",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="variant",
      *         in="path",
@@ -145,7 +145,7 @@ class VariantController extends Controller
      *     path="/api/v1/variants/{variant}",
      *     tags={"Variants"},
      *     summary="Delete a variant",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="variant",
      *         in="path",

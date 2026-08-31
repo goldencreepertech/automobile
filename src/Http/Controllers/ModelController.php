@@ -21,7 +21,7 @@ class ModelController extends Controller
      *     path="/api/v1/models",
      *     tags={"Models"},
      *     summary="List models",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="manufacturer_id",
      *         in="query",
@@ -52,7 +52,7 @@ class ModelController extends Controller
      *     path="/api/v1/models",
      *     tags={"Models"},
      *     summary="Create a model",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -85,7 +85,7 @@ class ModelController extends Controller
      *     path="/api/v1/models/{model}",
      *     tags={"Models"},
      *     summary="Get a single model",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
@@ -106,7 +106,7 @@ class ModelController extends Controller
      *     path="/api/v1/models/{model}",
      *     tags={"Models"},
      *     summary="Update a model",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="model",
      *         in="path",
@@ -145,7 +145,7 @@ class ModelController extends Controller
      *     path="/api/v1/models/{model}",
      *     tags={"Models"},
      *     summary="Delete a model",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="model",
      *         in="path",

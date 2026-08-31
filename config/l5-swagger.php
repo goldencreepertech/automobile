@@ -97,7 +97,7 @@ return [
 
         'securityDefinitions' => [
             'securitySchemes' => [
-                'sanctum' => [
+                'bearerAuth' => [
                     'type' => 'http',
                     'scheme' => 'bearer',
                     'bearerFormat' => 'token',
@@ -106,7 +106,7 @@ return [
             ],
             'security' => [
                 [
-                    'sanctum' => [],
+                    'bearerAuth' => [],
                 ],
             ],
         ],

@@ -89,7 +89,7 @@ class AuthController extends Controller
      *     path="/api/v1/user",
      *     tags={"Authentication"},
      *     summary="Get current authenticated user",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(response="200", description="OK"),
      *     @OA\Response(response="401", description="Unauthorized")
      * )
@@ -104,7 +104,7 @@ class AuthController extends Controller
      *     path="/api/v1/logout",
      *     tags={"Authentication"},
      *     summary="Logout current user",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Response(response="200", description="Logged out"),
      *     @OA\Response(response="401", description="Unauthorized")
      * )

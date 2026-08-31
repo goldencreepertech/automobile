@@ -20,7 +20,7 @@ class PartController extends Controller
      *     path="/api/v1/parts",
      *     tags={"Parts"},
      *     summary="List parts",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="name",
      *         in="query",
@@ -58,7 +58,7 @@ class PartController extends Controller
      *     path="/api/v1/parts",
      *     tags={"Parts"},
      *     summary="Create a part",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -101,7 +101,7 @@ class PartController extends Controller
      *     path="/api/v1/parts/{part}",
      *     tags={"Parts"},
      *     summary="Get a single part",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="part",
      *         in="path",
@@ -122,7 +122,7 @@ class PartController extends Controller
      *     path="/api/v1/parts/{part}",
      *     tags={"Parts"},
      *     summary="Update a part",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="part",
      *         in="path",
@@ -171,7 +171,7 @@ class PartController extends Controller
      *     path="/api/v1/parts/{part}",
      *     tags={"Parts"},
      *     summary="Delete a part",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="part",
      *         in="path",

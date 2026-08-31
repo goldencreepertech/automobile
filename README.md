@@ -2,12 +2,15 @@
 
 An installable **Laravel package** that ships a ready-made vehicle database — manufacturers,
 models, variants, vehicles, and parts — with real seed data and an optional REST API
-(static-token auth + optional Swagger/OpenAPI docs).
+(optional Swagger/OpenAPI docs).
 
 - **Composer name:** `goldencreepertech/automobile`
 - **PHP namespace:** `Automobile\`
-- **Requires:** PHP `^8.2`, `laravel/framework` `^12.0`, `laravel/sanctum` `^4.0` — nothing else
+- **Requires:** PHP `^8.2`, `laravel/framework` `^12.0` — nothing else
 - **License:** MIT
+
+> The bundled routes ship with **no authentication** — the host application adds its own.
+> See [Configuration](#configuration).
 
 > Swagger doc generation is optional: `composer require --dev darkaonline/l5-swagger` in the
 > consuming app to enable `php artisan l5-swagger:generate`. The controllers' OpenAPI
@@ -45,7 +48,7 @@ php artisan automobile:install
 
 ### What `automobile:install` does
 
-1. Publishes the package config (`config/automobile.php`, `config/static_token.php`)
+1. Publishes the package config (`config/automobile.php`)
 2. Runs `php artisan migrate`
 3. Seeds the bundled manufacturer / model / variant / vehicle / part catalog
 
@@ -69,8 +72,7 @@ php artisan automobile:seed
 | Models | `Automobile\Models\{Manufacturer, VehicleModel, Variant, Vehicle, Part}` |
 | Migrations | Auto-loaded from the package via `loadMigrationsFrom()` — no publish step needed |
 | Seeder | `Automobile\Database\Seeders\AutomobileSeeder` — real catalog for vehicles sold in India (≈2026), plus a spare-parts catalog |
-| REST API | `apiResource` routes for all five models, behind a config flag |
-| Auth | `auth.static` middleware — bearer token compared against `STATIC_TOKEN`, falling back to the configured guard (`automobile.auth.guard`, default `sanctum`) |
+| REST API | `apiResource` routes for all five models, behind a config flag; **no auth of its own** — add yours to `automobile.routes.middleware` |
 | Docs | OpenAPI annotations on the controllers + `Automobile\Swagger\SwaggerDefinitions` — rendered by `darkaonline/l5-swagger` when the consuming app adds it (dev) |
 
 ### Data model
@@ -100,7 +102,7 @@ Manufacturer 1──∞ VehicleModel 1──∞ Variant 1──∞ Vehicle ∞�
 
 Enabled by default. Every route is registered under
 `config('automobile.routes.prefix')` (default `api/v1`) with the
-`config('automobile.routes.middleware')` stack (default `['api', 'auth.static']`).
+`config('automobile.routes.middleware')` stack (default `['api']` — add your auth guard).
 
 | Method | URI | Action | Notes |
 | --- | --- | --- | --- |
@@ -125,8 +127,7 @@ Enabled by default. Every route is registered under
 ### Example
 
 ```bash
-curl -H "Authorization: Bearer $STATIC_TOKEN" \
-     -H "Accept: application/json" \
+curl -H "Accept: application/json" \
      "https://your-app.test/api/v1/vehicles?fuel_type=Electric&body_type=SUV"
 ```
 
@@ -161,34 +162,29 @@ curl -H "Authorization: Bearer $STATIC_TOKEN" \
 'routes' => [
     'enabled'    => (bool) env('AUTOMOBILE_ROUTES_ENABLED', true),
     'prefix'     => env('AUTOMOBILE_ROUTES_PREFIX', 'api/v1'),
-    'middleware' => ['api', 'auth.static'],
-],
-
-'auth' => [
-    'guard' => env('AUTOMOBILE_AUTH_GUARD', 'sanctum'),
+    'middleware' => ['api'],
 ],
 ```
 
 Set `AUTOMOBILE_ROUTES_ENABLED=false` to keep only the models / migrations / seeder and
 expose the data through your own controllers.
 
-Static-token auth (`config/static_token.php`):
+### Authentication
 
-```dotenv
-IS_STATIC_TOKEN=true
-STATIC_TOKEN=your-secret-token
+The package ships none. The bundled routes run through whatever you put in
+`automobile.routes.middleware` — publish the config and add your guard:
+
+```php
+'middleware' => ['api', 'auth:sanctum'],   // or 'auth', a custom middleware, ...
 ```
 
-The `auth.static` middleware compares the bearer token against `STATIC_TOKEN`; any other
-request falls through to `config('automobile.auth.guard')` (Sanctum by default). Point
-`AUTOMOBILE_AUTH_GUARD` at your own guard — or drop `auth.static` from the middleware stack
-entirely — to bring your own auth.
+Leave it as `['api']` and the endpoints are public.
 
 ### Publishable tags
 
 | Tag | Publishes |
 | --- | --- |
-| `automobile-config` | `config/automobile.php`, `config/static_token.php` |
+| `automobile-config` | `config/automobile.php` |
 | `automobile-migrations` | The domain migration files — only if you want to customize the schema *and* stop the package auto-loading its migrations |
 
 ---
@@ -207,11 +203,12 @@ php artisan serve
 Swagger UI is then at `/api/documentation`. Set `L5_SWAGGER_CONST_HOST` in `.env` to the
 public base URL used in the generated spec's `@OA\Server`.
 
-The demo defines its own API — including `login` / `register` / `user` / `logout` — in
-`routes/api.php`, so it sets `AUTOMOBILE_ROUTES_ENABLED=false` to avoid duplicate resource
-routes. The Laravel/Sanctum core tables (`users`, `cache`, `jobs`,
-`personal_access_tokens`) live in `database/migrations/host/` and are loaded only by the
-demo's `AppServiceProvider`, never by the package.
+The demo defines its own API — including Sanctum-based `login` / `register` / `user` /
+`logout` and `auth:sanctum`-guarded resource routes — in `routes/api.php`, so it sets
+`AUTOMOBILE_ROUTES_ENABLED=false` to avoid duplicate resource routes. The Laravel/Sanctum
+core tables (`users`, `cache`, `jobs`, `personal_access_tokens`) live in
+`database/migrations/host/` and are loaded only by the demo's `AppServiceProvider`, never by
+the package.
 
 ---
 
@@ -234,15 +231,14 @@ CI (`.github/workflows/ci.yml`) runs the suite on PHP 8.2 / 8.3 / 8.4.
 
 ```
 src/
-  AutomobileServiceProvider.php      # migrations, middleware alias, routes, publishing, commands
+  AutomobileServiceProvider.php      # migrations, routes, publishing, commands
   Console/Commands/                  # automobile:install, automobile:seed
   Models/                            # Manufacturer, VehicleModel, Variant, Vehicle, Part
   Http/Controllers/                  # apiResource controllers (OpenAPI-annotated)
   Http/Resources/                    # API Resources for response shaping
-  Http/Middleware/                   # AuthenticateWithStaticToken
-  Swagger/SwaggerDefinitions.php     # @OA\OpenApi root
+  Swagger/SwaggerDefinitions.php     # @OA\Info / @OA\Server / @OA\SecurityScheme
   Database/Seeders/AutomobileSeeder.php
-config/                    automobile.php, static_token.php  (+ demo app config)
+config/                    automobile.php  (+ demo app config)
 routes/automobile.php      bundled REST API routes (loaded by the service provider)
 database/migrations/       domain tables (shipped by the package)
 database/migrations/host/  Laravel/Sanctum core tables (demo app only)
@@ -253,11 +249,10 @@ database/migrations/host/  Laravel/Sanctum core tables (demo app only)
 ## Roadmap
 
 - [x] Package skeleton — `type: library`, `Automobile\` → `src/`, domain code moved out of `app/`
-- [x] `AutomobileServiceProvider` — migrations, routes (config-guarded), middleware alias, config merge + publish
+- [x] `AutomobileServiceProvider` — migrations, config-guarded routes, config merge + publish
 - [x] Auto-discovery via `composer.json` `extra.laravel.providers`
 - [x] One-command install — `automobile:install` (+ `automobile:seed`)
-- [x] Trim runtime deps to `laravel/framework` + `laravel/sanctum` (l5-swagger, tinker → dev; sail dropped)
-- [x] Target Laravel 12 (Laravel 11 is EOL and carries unpatched advisories)
+- [x] Runtime dep is just `laravel/framework` `^12.0` — no bundled auth (host brings its own)
 - [x] Isolated package tests with `orchestra/testbench` + GitHub Actions CI
-- [ ] Verify `composer require` + `automobile:install` end-to-end in a clean host app
-- [ ] Tag `v0.1.0` and submit to [Packagist](https://packagist.org/) as `goldencreepertech/automobile`
+- [x] Verified `automobile:install` end-to-end in a clean Testbench app
+- [ ] Submit to [Packagist](https://packagist.org/) as `goldencreepertech/automobile` + auto-update hook

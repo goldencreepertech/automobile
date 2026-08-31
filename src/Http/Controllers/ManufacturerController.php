@@ -21,7 +21,7 @@ class ManufacturerController extends Controller
      *     path="/api/v1/manufacturers",
      *     tags={"Manufacturers"},
      *     summary="List manufacturers",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="name",
      *         in="query",
@@ -45,7 +45,7 @@ class ManufacturerController extends Controller
      *     path="/api/v1/manufacturers",
      *     tags={"Manufacturers"},
      *     summary="Create a manufacturer",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -73,7 +73,7 @@ class ManufacturerController extends Controller
      *     path="/api/v1/manufacturers/{manufacturer}",
      *     tags={"Manufacturers"},
      *     summary="Get a single manufacturer",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="manufacturer",
      *         in="path",
@@ -94,7 +94,7 @@ class ManufacturerController extends Controller
      *     path="/api/v1/manufacturers/{manufacturer}",
      *     tags={"Manufacturers"},
      *     summary="Update a manufacturer",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="manufacturer",
      *         in="path",
@@ -129,7 +129,7 @@ class ManufacturerController extends Controller
      *     path="/api/v1/manufacturers/{manufacturer}",
      *     tags={"Manufacturers"},
      *     summary="Delete a manufacturer",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="manufacturer",
      *         in="path",

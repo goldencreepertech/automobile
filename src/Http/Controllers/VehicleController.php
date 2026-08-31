@@ -20,7 +20,7 @@ class VehicleController extends Controller
      *     path="/api/v1/vehicles",
      *     tags={"Vehicles"},
      *     summary="List vehicles",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="variant_id",
      *         in="query",
@@ -79,7 +79,7 @@ class VehicleController extends Controller
      *     path="/api/v1/vehicles",
      *     tags={"Vehicles"},
      *     summary="Create a vehicle",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -126,7 +126,7 @@ class VehicleController extends Controller
      *     path="/api/v1/vehicles/{vehicle}",
      *     tags={"Vehicles"},
      *     summary="Get a single vehicle",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="vehicle",
      *         in="path",
@@ -147,7 +147,7 @@ class VehicleController extends Controller
      *     path="/api/v1/vehicles/{vehicle}",
      *     tags={"Vehicles"},
      *     summary="Update a vehicle",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="vehicle",
      *         in="path",
@@ -200,7 +200,7 @@ class VehicleController extends Controller
      *     path="/api/v1/vehicles/{vehicle}",
      *     tags={"Vehicles"},
      *     summary="Delete a vehicle",
-     *     security={{"sanctum": {}}},
+     *     security={{"bearerAuth": {}}},
      *     @OA\Parameter(
      *         name="vehicle",
      *         in="path",

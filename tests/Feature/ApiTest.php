@@ -20,39 +20,25 @@ class ApiTest extends TestCase
         $this->assertTrue(\Schema::hasTable('part_vehicle'));
     }
 
-    public function test_bundled_routes_are_registered_and_guarded(): void
+    public function test_bundled_routes_are_registered(): void
     {
-        $this->getJson('/api/v1/manufacturers')->assertUnauthorized();
-        $this->getJson('/api/v1/vehicles')->assertUnauthorized();
+        $this->getJson('/api/v1/manufacturers')->assertOk();
+        $this->getJson('/api/v1/vehicles')->assertOk();
     }
 
-    public function test_a_valid_static_token_grants_access(): void
+    public function test_manufacturers_can_be_listed_created_and_filtered(): void
     {
-        $this->loadLaravelMigrations();
-
         Manufacturer::create(['name' => 'Tata Motors']);
 
-        $this->withToken('test-token')
-            ->getJson('/api/v1/manufacturers')
+        $this->getJson('/api/v1/manufacturers')
             ->assertOk()
             ->assertJsonStructure(['data' => [['id', 'name']]])
             ->assertJsonFragment(['name' => 'Tata Motors']);
-    }
 
-    public function test_manufacturers_can_be_created_and_filtered(): void
-    {
-        $this->loadLaravelMigrations();
+        $this->postJson('/api/v1/manufacturers', ['name' => 'Kia'])->assertCreated();
+        $this->postJson('/api/v1/manufacturers', ['name' => 'Kia'])->assertStatus(422);
 
-        $this->withToken('test-token')
-            ->postJson('/api/v1/manufacturers', ['name' => 'Kia'])
-            ->assertCreated();
-
-        $this->withToken('test-token')
-            ->postJson('/api/v1/manufacturers', ['name' => 'Kia'])
-            ->assertStatus(422);
-
-        $this->withToken('test-token')
-            ->getJson('/api/v1/manufacturers?name=Ki')
+        $this->getJson('/api/v1/manufacturers?name=Ki')
             ->assertOk()
             ->assertJsonCount(1, 'data');
     }
