@@ -4,9 +4,9 @@ namespace Automobile\Database\Seeders;
 
 use Automobile\Models\Manufacturer;
 use Automobile\Models\Part;
+use Automobile\Models\Variant;
 use Automobile\Models\Vehicle;
 use Automobile\Models\VehicleModel;
-use Automobile\Models\Variant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

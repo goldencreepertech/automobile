@@ -6,8 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^11.0",
-        "laravel/sanctum": "^4.3"
+        "laravel/framework": "^11.0 || ^12.0",
+        "laravel/sanctum": "^4.0"
     },
     "require-dev": {
         "darkaonline/l5-swagger": "^11.1",
@@ -16,8 +16,9 @@
         "laravel/pint": "^1.13",
         "laravel/tinker": "^2.9",
         "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.0",
-        "phpunit/phpunit": "^10.5",
+        "nunomaduro/collision": "^8.0 || ^9.0",
+        "orchestra/testbench": "^9.0 || ^10.0",
+        "phpunit/phpunit": "^10.5 || ^11.0",
         "spatie/laravel-ignition": "^2.4"
     },
     "suggest": {
@@ -56,7 +57,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "11.x-dev"
+            "dev-main": "0.1.x-dev"
         },
         "laravel": {
             "dont-discover": [],

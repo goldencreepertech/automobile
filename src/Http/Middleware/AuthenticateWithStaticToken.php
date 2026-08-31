@@ -2,8 +2,10 @@
 
 namespace Automobile\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,10 +38,10 @@ class AuthenticateWithStaticToken
      * Resolve the host application's configured authenticatable model, so this
      * middleware isn't hard-coupled to a specific app's User class.
      *
-     * @return class-string<\Illuminate\Contracts\Auth\Authenticatable>
+     * @return class-string<Authenticatable>
      */
     private function resolveUserModel(): string
     {
-        return config('auth.providers.users.model', \App\Models\User::class);
+        return config('auth.providers.users.model', User::class);
     }
 }

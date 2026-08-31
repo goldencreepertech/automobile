@@ -11,7 +11,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Host used in the generated OpenAPI spec's @OA\Server. Defined here so it
+        // is available before l5-swagger scans the annotations.
+        if (! \defined('L5_SWAGGER_CONST_HOST')) {
+            \define('L5_SWAGGER_CONST_HOST', env('L5_SWAGGER_CONST_HOST', config('app.url')));
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use Automobile\Http\Middleware\AuthenticateWithStaticToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => null);
 
         $middleware->alias([
-            'auth.static' => \Automobile\Http\Middleware\AuthenticateWithStaticToken::class,
+            'auth.static' => AuthenticateWithStaticToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

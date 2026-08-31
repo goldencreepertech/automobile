@@ -1,5 +1,9 @@
 <?php
 
+use L5Swagger\Generator;
+use OpenApi\Analysers\DocBlockAnnotationFactory;
+use OpenApi\Analysers\ReflectionAnalyser;
+
 return [
     'default' => 'default',
 
@@ -78,12 +82,17 @@ return [
         'scanOptions' => [
             'generator_factory' => null,
             'default_processors_configuration' => [],
-            'analyser' => null,
+            // The bundled controllers use @OA docblock annotations (not PHP 8 attributes),
+            // so scan with the doc-block factory. Needs doctrine/annotations (dev); falls
+            // back to swagger-php's default analyser when it (or swagger-php) is absent.
+            'analyser' => class_exists(DocBlockAnnotationFactory::class)
+                ? new ReflectionAnalyser([new DocBlockAnnotationFactory])
+                : null,
             'analysis' => null,
             'processors' => [],
             'pattern' => null,
             'exclude' => [],
-            'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', \L5Swagger\Generator::OPEN_API_DEFAULT_SPEC_VERSION),
+            'open_api_spec_version' => env('L5_SWAGGER_OPEN_API_SPEC_VERSION', Generator::OPEN_API_DEFAULT_SPEC_VERSION),
         ],
 
         'securityDefinitions' => [
