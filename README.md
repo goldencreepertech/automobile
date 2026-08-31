@@ -2,12 +2,16 @@
 
 An installable **Laravel package** that ships a ready-made vehicle database — manufacturers,
 models, variants, vehicles, and parts — with real seed data and an optional REST API
-(static-token auth + Swagger/OpenAPI docs).
+(static-token auth + optional Swagger/OpenAPI docs).
 
 - **Composer name:** `goldencreepertech/automobile`
 - **PHP namespace:** `Automobile\`
-- **Requires:** PHP `^8.2`, Laravel `^11.0`
+- **Requires:** PHP `^8.2`, `laravel/framework` `^11.0`, `laravel/sanctum` `^4.3` — nothing else
 - **License:** MIT
+
+> Swagger doc generation is optional: `composer require --dev darkaonline/l5-swagger` in the
+> consuming app to enable `php artisan l5-swagger:generate`. The controllers' OpenAPI
+> annotations are inert docblocks when it isn't installed.
 
 This repository is *also* a runnable demo Laravel app (`app/`, `bootstrap/`, `public/`,
 `routes/api.php`) that consumes the package through its own service provider — exactly as a
@@ -67,7 +71,7 @@ php artisan automobile:seed
 | Seeder | `Automobile\Database\Seeders\AutomobileSeeder` — real catalog for vehicles sold in India (≈2026), plus a spare-parts catalog |
 | REST API | `apiResource` routes for all five models, behind a config flag |
 | Auth | `auth.static` middleware — bearer token compared against `STATIC_TOKEN`, falling back to Sanctum |
-| Docs | `darkaonline/l5-swagger` annotations on the controllers + `Automobile\Swagger\SwaggerDefinitions` |
+| Docs | OpenAPI annotations on the controllers + `Automobile\Swagger\SwaggerDefinitions` — rendered by `darkaonline/l5-swagger` when the consuming app adds it (dev) |
 
 ### Data model
 
@@ -231,6 +235,6 @@ database/migrations/host/  Laravel/Sanctum core tables (demo app only)
 - [x] `AutomobileServiceProvider` — migrations, routes (config-guarded), middleware alias, config merge + publish
 - [x] Auto-discovery via `composer.json` `extra.laravel.providers`
 - [x] One-command install — `automobile:install` (+ `automobile:seed`)
+- [x] Trim runtime deps to `laravel/framework` + `laravel/sanctum` (l5-swagger, tinker → dev; sail dropped)
 - [ ] Isolated package tests with `orchestra/testbench`
-- [ ] Move `laravel/tinker` to `require-dev` (demo-only convenience)
 - [ ] Tag `v0.1.0` and submit to [Packagist](https://packagist.org/) as `goldencreepertech/automobile`

@@ -78,9 +78,7 @@ return [
         'scanOptions' => [
             'generator_factory' => null,
             'default_processors_configuration' => [],
-            'analyser' => new \OpenApi\Analysers\ReflectionAnalyser([
-                new \OpenApi\Analysers\DocBlockAnnotationFactory(),
-            ]),
+            'analyser' => null,
             'analysis' => null,
             'processors' => [],
             'pattern' => null,
