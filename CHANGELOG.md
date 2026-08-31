@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-31
+
 ### Removed
 - **Static-token authentication.** The `auth.static` middleware,
   `config/static_token.php`, `AuthenticateWithStaticToken`, and the
@@ -46,5 +48,6 @@ Composer cannot resolve — every Laravel 11.x release carries unpatched advisor
 - Isolated test suite with `orchestra/testbench` 10.
 - GitHub Actions CI: PHPUnit on PHP 8.2 / 8.3 / 8.4 + Pint.
 
-[Unreleased]: https://github.com/goldencreepertech/automobile/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/goldencreepertech/automobile/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/goldencreepertech/automobile/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/goldencreepertech/automobile/releases/tag/v0.1.1
