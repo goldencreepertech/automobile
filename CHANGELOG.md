@@ -5,9 +5,10 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-08-31
+## [0.1.1] - 2026-08-31
 
-First release.
+First usable release. (`v0.1.0` was tagged with a `^11.0 || ^12.0` constraint that
+Composer cannot resolve — every Laravel 11.x release carries unpatched advisories.)
 
 ### Added
 - `AutomobileServiceProvider` — auto-discovered; loads the package migrations,
@@ -33,5 +34,5 @@ First release.
 - Isolated test suite with `orchestra/testbench` 10.
 - GitHub Actions CI: PHPUnit on PHP 8.2 / 8.3 / 8.4 + Pint.
 
-[Unreleased]: https://github.com/goldencreepertech/automobile/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/goldencreepertech/automobile/releases/tag/v0.1.0
+[Unreleased]: https://github.com/goldencreepertech/automobile/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/goldencreepertech/automobile/releases/tag/v0.1.1
