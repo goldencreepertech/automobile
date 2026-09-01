@@ -1306,13 +1306,13 @@ class AutomobileSeeder extends Seeder
                     // One vehicle per variant; it takes the variant's id.
                     $vehicle = new Vehicle([
                         'variant_id' => $variantId,
+                        'fuel_type' => $model['fuel_type'],
+                        'body_type' => $model['body_type'],
+                        'seating_capacity' => $model['seating_capacity'],
                         'launch_date' => $model['launch_date'],
                         'discontinue_date' => null,
                         'details' => [
                             'manufacturing_origin' => $model['origin'],
-                            'fuel_type' => $model['fuel_type'],
-                            'body_type' => $model['body_type'],
-                            'seating_capacity' => $model['seating_capacity'],
                         ],
                     ]);
                     $vehicle->id = $variantId;

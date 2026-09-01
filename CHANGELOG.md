@@ -11,6 +11,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   child table is empty, so seeding failed on MySQL with a 1701 error.
 
 ### Changed
+- **`vehicles.fuel_type`, `body_type`, and `seating_capacity` are now real
+  columns** instead of keys inside the `details` JSON blob (`fuel_type` and
+  `body_type` are indexed). This models the `variant` → `vehicles` one-to-many
+  properly: one trim can ship in several fuel / body / seating combinations.
+  `vehicles.details` now only carries `manufacturing_origin`. The API request
+  bodies, filters (`?fuel_type=`, `?body_type=`), `VehicleResource`, and OpenAPI
+  annotations move the three fields up to the top level accordingly.
 - `AutomobileSeeder` now carries a **fixed primary-key id on every catalog entry**
   (the array key at each level) and truncates its tables before seeding, so a
   flush + re-seed reproduces the exact same manufacturer / model / variant /

@@ -11,12 +11,16 @@ class Vehicle extends Model
 
     protected $casts = [
         'details' => 'array',
+        'seating_capacity' => 'integer',
         'launch_date' => 'date',
         'discontinue_date' => 'date',
     ];
 
     protected $fillable = [
         'variant_id',
+        'fuel_type',
+        'body_type',
+        'seating_capacity',
         'launch_date',
         'discontinue_date',
         'details',
