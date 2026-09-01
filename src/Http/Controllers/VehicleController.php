@@ -64,8 +64,8 @@ class VehicleController extends Controller
     {
         $vehicles = Vehicle::with(['variant.model.manufacturer', 'parts'])
             ->when($request->filled('variant_id'), fn ($query) => $query->where('variant_id', $request->input('variant_id')))
-            ->when($request->filled('fuel_type'), fn ($query) => $query->where('details->fuel_type', $request->input('fuel_type')))
-            ->when($request->filled('body_type'), fn ($query) => $query->where('details->body_type', $request->input('body_type')))
+            ->when($request->filled('fuel_type'), fn ($query) => $query->where('fuel_type', $request->input('fuel_type')))
+            ->when($request->filled('body_type'), fn ($query) => $query->where('body_type', $request->input('body_type')))
             ->when($request->filled('manufacturing_origin'), fn ($query) => $query->where('details->manufacturing_origin', $request->input('manufacturing_origin')))
             ->when($request->filled('launch_date_from'), fn ($query) => $query->whereDate('launch_date', '>=', $request->input('launch_date_from')))
             ->when($request->filled('launch_date_to'), fn ($query) => $query->whereDate('launch_date', '<=', $request->input('launch_date_to')))
@@ -85,13 +85,13 @@ class VehicleController extends Controller
      *         @OA\JsonContent(
      *             required={"variant_id"},
      *             @OA\Property(property="variant_id", type="integer"),
+     *             @OA\Property(property="fuel_type", type="string"),
+     *             @OA\Property(property="body_type", type="string"),
+     *             @OA\Property(property="seating_capacity", type="integer"),
      *             @OA\Property(property="launch_date", type="string", format="date"),
      *             @OA\Property(property="discontinue_date", type="string", format="date"),
      *             @OA\Property(property="details", type="object", properties={
      *                 @OA\Property(property="manufacturing_origin", type="string"),
-     *                 @OA\Property(property="fuel_type", type="string"),
-     *                 @OA\Property(property="body_type", type="string"),
-     *                 @OA\Property(property="seating_capacity", type="integer"),
      *             }),
      *             @OA\Property(property="parts", type="array", @OA\Items(type="integer")),
      *         )
@@ -104,13 +104,13 @@ class VehicleController extends Controller
     {
         $data = $request->validate([
             'variant_id' => 'required|integer|exists:variants,id',
+            'fuel_type' => 'nullable|string|max:255',
+            'body_type' => 'nullable|string|max:255',
+            'seating_capacity' => 'nullable|integer|min:1|max:255',
             'launch_date' => 'nullable|date',
             'discontinue_date' => 'nullable|date|after_or_equal:launch_date',
             'details' => 'nullable|array',
             'details.manufacturing_origin' => 'nullable|string|max:255',
-            'details.fuel_type' => 'nullable|string|max:255',
-            'details.body_type' => 'nullable|string|max:255',
-            'details.seating_capacity' => 'nullable|integer',
             'parts' => 'nullable|array',
             'parts.*' => 'integer|exists:parts,id',
         ]);
@@ -157,13 +157,13 @@ class VehicleController extends Controller
      *     @OA\RequestBody(
      *         @OA\JsonContent(
      *             @OA\Property(property="variant_id", type="integer"),
+     *             @OA\Property(property="fuel_type", type="string"),
+     *             @OA\Property(property="body_type", type="string"),
+     *             @OA\Property(property="seating_capacity", type="integer"),
      *             @OA\Property(property="launch_date", type="string", format="date"),
      *             @OA\Property(property="discontinue_date", type="string", format="date"),
      *             @OA\Property(property="details", type="object", properties={
      *                 @OA\Property(property="manufacturing_origin", type="string"),
-     *                 @OA\Property(property="fuel_type", type="string"),
-     *                 @OA\Property(property="body_type", type="string"),
-     *                 @OA\Property(property="seating_capacity", type="integer"),
      *             }),
      *             @OA\Property(property="parts", type="array", @OA\Items(type="integer")),
      *         )
@@ -176,13 +176,13 @@ class VehicleController extends Controller
     {
         $data = $request->validate([
             'variant_id' => 'sometimes|required|integer|exists:variants,id',
+            'fuel_type' => 'nullable|string|max:255',
+            'body_type' => 'nullable|string|max:255',
+            'seating_capacity' => 'nullable|integer|min:1|max:255',
             'launch_date' => 'nullable|date',
             'discontinue_date' => 'nullable|date|after_or_equal:launch_date',
             'details' => 'nullable|array',
             'details.manufacturing_origin' => 'nullable|string|max:255',
-            'details.fuel_type' => 'nullable|string|max:255',
-            'details.body_type' => 'nullable|string|max:255',
-            'details.seating_capacity' => 'nullable|integer',
             'parts' => 'nullable|array',
             'parts.*' => 'integer|exists:parts,id',
         ]);

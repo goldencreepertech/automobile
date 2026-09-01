@@ -86,11 +86,13 @@ Manufacturer 1──∞ VehicleModel 1──∞ Variant 1──∞ Vehicle ∞�
 | `manufacturers` | `id`, `name` (unique), timestamps |
 | `models` | `id`, `manufacturer_id`, `name`, timestamps — unique on `(manufacturer_id, name)` |
 | `variants` | `id`, `model_id`, `name`, timestamps — unique on `(model_id, name)` |
-| `vehicles` | `id`, `variant_id`, `launch_date` (nullable), `discontinue_date` (nullable), `details` (json), timestamps |
+| `vehicles` | `id`, `variant_id`, `fuel_type` (nullable), `body_type` (nullable), `seating_capacity` (nullable), `launch_date` (nullable), `discontinue_date` (nullable), `details` (json), timestamps |
 | `parts` | `id`, `name`, `part_number` (nullable), `category` (nullable), `details` (json), timestamps |
 | `part_vehicle` | `vehicle_id`, `part_id` — unique on `(vehicle_id, part_id)` |
 
-`vehicles.details` holds `manufacturing_origin`, `fuel_type`, `body_type`, `seating_capacity`.
+A `variant` **has many** `vehicles` — the same trim can ship in more than one
+`fuel_type` / `body_type` / `seating_capacity` combination.
+`vehicles.details` holds `manufacturing_origin` (free-form extras).
 `parts.details` holds `manufacturer`, `compatibility`.
 
 > The `VehicleModel` model maps to the `models` table (`protected $table = 'models'`) to
@@ -118,7 +120,7 @@ Enabled by default. Every route is registered under
 | `POST` | `/variants` | create | `{ "model_id", "name" }` |
 | `GET/PUT/PATCH/DELETE` | `/variants/{id}` | show / update / delete | |
 | `GET` | `/vehicles` | list | `?variant_id=` `?fuel_type=` `?body_type=` `?manufacturing_origin=` `?launch_date_from=` `?launch_date_to=` · paginated (15) |
-| `POST` | `/vehicles` | create | `{ "variant_id", "launch_date?", "discontinue_date?", "details?": {...}, "parts?": [ids] }` |
+| `POST` | `/vehicles` | create | `{ "variant_id", "fuel_type?", "body_type?", "seating_capacity?", "launch_date?", "discontinue_date?", "details?": {...}, "parts?": [ids] }` |
 | `GET/PUT/PATCH/DELETE` | `/vehicles/{id}` | show / update / delete | `show` eager-loads `variant.model.manufacturer` + `parts` |
 | `GET` | `/parts` | list | `?name=` `?category=` `?part_number=` · paginated (15) |
 | `POST` | `/parts` | create | `{ "name", "part_number?", "category?", "details?": {...}, "vehicles?": [ids] }` |
@@ -137,13 +139,13 @@ curl -H "Accept: application/json" \
     {
       "id": 42,
       "variant_id": 118,
+      "fuel_type": "Electric",
+      "body_type": "SUV",
+      "seating_capacity": 5,
       "launch_date": "2022-10-11",
       "discontinue_date": null,
       "details": {
-        "manufacturing_origin": "China",
-        "fuel_type": "Electric",
-        "body_type": "SUV",
-        "seating_capacity": 5
+        "manufacturing_origin": "China"
       }
     }
   ],

@@ -11,6 +11,9 @@ return new class extends Migration
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('variant_id')->constrained()->cascadeOnDelete();
+            $table->string('fuel_type')->nullable()->index();
+            $table->string('body_type')->nullable()->index();
+            $table->unsignedTinyInteger('seating_capacity')->nullable();
             $table->date('launch_date')->nullable();
             $table->date('discontinue_date')->nullable();
             $table->json('details')->nullable();
