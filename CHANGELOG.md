@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- `AutomobileSeeder` now carries a **fixed primary-key id on every catalog entry**
+  (the array key at each level) and truncates its tables before seeding, so a
+  flush + re-seed reproduces the exact same manufacturer / model / variant /
+  vehicle / part ids and pivot rows. Vehicles take their variant's id. Give new
+  entries the next unused id and append — never reuse, renumber, or reorder.
+
 ## [0.2.0] - 2026-08-31
 
 ### Removed

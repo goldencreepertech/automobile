@@ -256,3 +256,60 @@ database/migrations/host/  Laravel/Sanctum core tables (demo app only)
 - [x] Isolated package tests with `orchestra/testbench` + GitHub Actions CI
 - [x] Verified `automobile:install` end-to-end in a clean Testbench app
 - [ ] Submit to [Packagist](https://packagist.org/) as `goldencreepertech/automobile` + auto-update hook
+
+---
+
+## After a code change
+
+Run this locally before committing. All commands are from the repo root.
+
+```bash
+# 1. Dependencies (only if composer.json changed)
+composer update --no-interaction        # otherwise: composer install
+
+# 2. Auto-fix code style, then verify
+vendor/bin/pint
+vendor/bin/pint --test
+
+# 3. Test suite (Testbench — no host app needed)
+vendor/bin/phpunit
+
+# 4. Manifest + advisories
+composer validate
+composer audit
+
+# 5. If you touched controllers / @OA annotations, regenerate the demo spec
+php artisan l5-swagger:generate
+
+# 6. Optional: exercise the package as a real consumer (fresh skeleton app)
+DB_CONNECTION=sqlite DB_DATABASE=":memory:" vendor/bin/testbench automobile:install
+#   ^ this writes vendor/orchestra/testbench-core/laravel/{.env,config/automobile.php}.
+#     Delete them afterwards or `vendor/bin/phpunit` may 404 on the bundled routes:
+rm -f vendor/orchestra/testbench-core/laravel/.env \
+      vendor/orchestra/testbench-core/laravel/config/automobile.php
+```
+
+Then commit and push:
+
+```bash
+git add -A
+git commit -m "Describe the change"
+git push origin main
+```
+
+### Cutting a release
+
+```bash
+# 1. Move the "Unreleased" notes in CHANGELOG.md under a new "## [X.Y.Z] - YYYY-MM-DD"
+#    heading and update the link refs at the bottom, then commit it.
+git add CHANGELOG.md && git commit -m "Changelog: X.Y.Z"
+
+# 2. Tag and push (annotated tag)
+git tag -a vX.Y.Z -m "vX.Y.Z — one-line summary"
+git push origin main
+git push origin vX.Y.Z
+```
+
+Versioning (pre-1.0): bump **patch** for fixes, **minor** for features or any
+breaking change. Packagist publishes the new tag automatically once the
+[Packagist GitHub App](https://github.com/apps/packagist) is installed on the repo.
