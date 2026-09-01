@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- `AutomobileSeeder` now disables foreign key checks while flushing its tables.
+  MySQL refuses to `TRUNCATE` a table referenced by a foreign key even when the
+  child table is empty, so seeding failed on MySQL with a 1701 error.
+
 ### Changed
 - `AutomobileSeeder` now carries a **fixed primary-key id on every catalog entry**
   (the array key at each level) and truncates its tables before seeding, so a

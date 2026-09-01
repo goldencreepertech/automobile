@@ -9,6 +9,7 @@ use Automobile\Models\Vehicle;
 use Automobile\Models\VehicleModel;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class AutomobileSeeder extends Seeder
 {
@@ -1245,16 +1246,25 @@ class AutomobileSeeder extends Seeder
 
     /**
      * Empty every table this seeder owns so it can be re-run with the same ids.
-     * Ordered children-first so foreign keys never need disabling.
+     *
+     * MySQL refuses to TRUNCATE a table that any foreign key points at - even when
+     * the referencing table is already empty - so child-first ordering is not
+     * enough on its own; foreign key checks have to be off for the duration.
      */
     private function flush(): void
     {
-        DB::table('part_vehicle')->truncate();
-        Vehicle::truncate();
-        Variant::truncate();
-        VehicleModel::truncate();
-        Manufacturer::truncate();
-        Part::truncate();
+        Schema::disableForeignKeyConstraints();
+
+        try {
+            DB::table('part_vehicle')->truncate();
+            Vehicle::truncate();
+            Variant::truncate();
+            VehicleModel::truncate();
+            Manufacturer::truncate();
+            Part::truncate();
+        } finally {
+            Schema::enableForeignKeyConstraints();
+        }
     }
 
     private function seedParts(): void
