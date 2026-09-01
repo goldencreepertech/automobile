@@ -303,9 +303,11 @@ git push origin main
 # 1. Move the "Unreleased" notes in CHANGELOG.md under a new "## [X.Y.Z] - YYYY-MM-DD"
 #    heading and update the link refs at the bottom, then commit it.
 git add CHANGELOG.md && git commit -m "Changelog: X.Y.Z"
+# git add CHANGELOG.md && git commit -m "Changelog: 0.2.1"
 
 # 2. Tag and push (annotated tag)
 git tag -a vX.Y.Z -m "vX.Y.Z — one-line summary"
+# git tag -a v0.2.1 -m "v0.2.1 — one-line summary"
 git push origin main
 git push origin vX.Y.Z
 ```
